@@ -26,6 +26,8 @@ import SwiftUI
             view.string = text
             view.usesRuler = false
             view.isRichText = false
+            view.allowsUndo = true
+
             DispatchQueue.main.async {
                 height = view.textHeight()
             }
