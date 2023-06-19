@@ -15,6 +15,7 @@ import SwiftUI
         var onCommit: (() -> Void)?
         var onTab: (() -> Void)?
         var onBackTab: (() -> Void)?
+        var lineLimit: Int = 10
 
         func makeNSView(context: Context) -> NSTextView {
             let view = CustomNSTextView(rep: self)
@@ -26,9 +27,9 @@ import SwiftUI
             view.string = text
             view.usesRuler = false
             view.isRichText = false
-            DispatchQueue.main.async {
-                height = view.textHeight()
-            }
+            // Limit the height of the NSTextView to show maxLines of text
+            let singleLineHeight = view.font?.boundingRectForFont.size.height ?? 0
+            view.maxSize = CGSize(width: CGFloat.infinity, height: singleLineHeight * CGFloat(lineLimit))
             return view
         }
 
