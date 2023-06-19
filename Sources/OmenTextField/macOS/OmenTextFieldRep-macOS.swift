@@ -15,7 +15,6 @@ import SwiftUI
         var onCommit: (() -> Void)?
         var onTab: (() -> Void)?
         var onBackTab: (() -> Void)?
-        var lineLimit: Int = 10
 
         func makeNSView(context: Context) -> NSTextView {
             let view = CustomNSTextView(rep: self)
@@ -66,12 +65,6 @@ import SwiftUI
 
             func textDidChange(_ notification: Notification) {
                 guard let view = notification.object as? NSTextView else { return }
-
-                // Add these lines to limit the number of lines
-                let lines = view.string.components(separatedBy: .newlines)
-                if lines.count > rep.lineLimit {
-                    view.string = lines.dropLast().joined(separator: "\n")
-                }
 
                 rep.text = view.string
                 DispatchQueue.main.async {
