@@ -12,6 +12,7 @@ public struct OmenTextField: View {
     @Binding var text: String
     var isFocused: Binding<Bool>?
     @State var height: CGFloat = 0
+    var maxHeight: CGFloat = 300
     var returnKeyType: ReturnKeyType
     var onCommit: (() -> Void)?
     var onTab: (() -> Void)?
@@ -32,6 +33,7 @@ public struct OmenTextField: View {
         text: Binding<String>,
         isFocused: Binding<Bool>? = nil,
         returnKeyType: ReturnKeyType = .default,
+        maxHeight: CGFloat = 300,
         onTab: (() -> Void)? = nil,
         onBackTab: (() -> Void)? = nil,
         onCommit: (() -> Void)? = nil
@@ -41,6 +43,7 @@ public struct OmenTextField: View {
         self.isFocused = isFocused
         self.returnKeyType = returnKeyType
         self.onCommit = onCommit
+        self.maxHeight = maxHeight
         self.onTab = onTab
         self.onBackTab = onBackTab
     }
@@ -62,6 +65,7 @@ public struct OmenTextField: View {
                 )
                 .frame(height: height)
             #elseif os(macOS)
+            ScrollView {
                 OmenTextFieldRep(
                     text: $text,
                     isFocused: isFocused,
@@ -71,6 +75,8 @@ public struct OmenTextField: View {
                     onBackTab: onBackTab
                 )
                 .frame(height: height)
+            }
+            .frame(maxHeight: min(height, self.maxHeight))
             #endif
         }
     }
